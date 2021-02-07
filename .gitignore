@@ -5,5 +5,7 @@
 # Conventional directory for build outputs
 build/
 
+# Database
+db/
 # Directory created by dartdoc
 doc/api/
