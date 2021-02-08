@@ -54,6 +54,18 @@ void main(List<String> arguments) {
       print("Added one todo in ${argResults['list']}");
     }
   }
+  // remove -flow
+  else if (argResults.command.name == 'remove') {
+    if (argResults.arguments.length == 1) {
+      print(
+          '''Error : remove command takes one argument todo-id and a optional -l list-name - todo
+      (for example : remove 3 -l "shopping")
+          ''');
+    } else {
+      removeTodo(argResults.arguments[1], argResults['list']);
+      print("Removed one todo from ${argResults['list']}");
+    }
+  }
   // delete-flow
   else if (argResults.command.name == 'delete') {
     if (argResults.arguments.length == 2) {
@@ -79,7 +91,18 @@ void main(List<String> arguments) {
   else if (argResults.command.name == 'todos') {
     listTodos(argResults['list']);
   } else {
-    print('commands : create, add, todos, lists,remove, delete');
+    print('''
+Usage : `tdl [command] [option] ...`
+
+    Commands      Description
+-------------------------------------------
+    create        creates new list.
+    add           adds a todo to a particular list.
+    todos         display all not finished todos.
+    lists         displays all lists.
+    remove        removes a particular todo.
+    delete        deletes a list.
+    ''');
   }
 // main-end
 }

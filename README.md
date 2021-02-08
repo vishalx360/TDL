@@ -5,8 +5,7 @@
 # Introduction
 
 This is a command-line todo-list application written in dart (dartlang).
-
-It lets you manage multiple todo lists with ease from your terminal.
+This lets you manage multiple todo lists with ease from your terminal.
 
 # Installation
 
