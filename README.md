@@ -34,19 +34,19 @@ Step 3. Install Dependencies (assuming you have dart installed)
 dart pub get
 ```
 
-Step 3. Compile the source-code
+Step 4. Compile the source-code
 
 ```bash
 dart compile exe bin/tdl.dart -o build/tdl
 ```
 
-Step 4. Copy the generated binary file to /usr/bin dir
+Step 5. Copy the generated binary file to /usr/bin dir
 
-```
+```bash
 sudo cp tdl /usr/bin
 ```
 
-> Note : You can also skip Step 4 and add the path to binary to your PATH env variable by running the following command or adding this command to your shell config file. (for example your `.bashrc` file)
+> Note : You can also skip Step 5 and run the binary file directly by running command `./build/tdl` OR you can add the path to binary to your PATH env variable by running the following command or adding this command to your shell config file for permanently be able to run tdl from anywhere. (for example your `.bashrc` file)
 >
 > ```
 > export PATH=$PATH:/path/to/the/file
