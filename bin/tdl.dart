@@ -31,8 +31,13 @@ void main(List<String> arguments) {
   // parser-result
   var argResults = parser.parse(arguments);
 
+  var command;
+  // error checking
+  if (argResults.command != null) {
+    command = argResults.command.name;
+  }
 // create -flow
-  if (argResults.command.name == 'create') {
+  if (command == 'create') {
     if (argResults.arguments.length == 2) {
       createList(argResults.arguments[1]);
       print('Created new list named ${argResults.arguments[1]} ');
@@ -43,7 +48,7 @@ void main(List<String> arguments) {
     }
   }
 // add -flow
-  else if (argResults.command.name == 'add') {
+  else if (command == 'add') {
     if (argResults.arguments.length == 1) {
       print(
           '''Error : add command takes one argument todo text and a optional -l list-name - todo
@@ -55,7 +60,7 @@ void main(List<String> arguments) {
     }
   }
   // remove -flow
-  else if (argResults.command.name == 'remove') {
+  else if (command == 'remove') {
     if (argResults.arguments.length == 1) {
       print(
           '''Error : remove command takes one argument todo-id and a optional -l list-name - todo
@@ -67,7 +72,7 @@ void main(List<String> arguments) {
     }
   }
   // delete-flow
-  else if (argResults.command.name == 'delete') {
+  else if (command == 'delete') {
     if (argResults.arguments.length == 2) {
       if (argResults.arguments[1] != 'main_list') {
         deleteList(argResults.arguments[1]);
@@ -83,12 +88,12 @@ void main(List<String> arguments) {
   }
 
   // list -flow
-  else if (argResults.command.name == 'lists') {
+  else if (command == 'lists') {
     listTables();
   }
 
   // list-todo -flow
-  else if (argResults.command.name == 'todos') {
+  else if (command == 'todos') {
     listTodos(argResults['list']);
   } else {
     print('''
