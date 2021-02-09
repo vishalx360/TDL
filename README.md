@@ -13,8 +13,8 @@ This lets you manage multiple todo lists with ease from your terminal.
 
 ### Prerequisites
 
-- [dart]('https://dart.dev/get-dart')
-- [sqlite]('https://sqlite.org/download.html')
+- [dart](https://dart.dev/get-dart)
+- [sqlite](https://sqlite.org/download.html)
 
 Step 1. clone this repo.
 
