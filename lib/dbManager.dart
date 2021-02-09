@@ -46,9 +46,15 @@ void addTodo(String todoText, String listName) {
 
 // removes a todo to a particular list
 void removeTodo(String todoId, String listName) {
+  // find actual todo-id from db
+  final notDoneTodos = db.select(
+      'SELECT * FROM ${listName} WHERE done == 0 ORDER BY createdAt ASC LIMIT ${todoId}');
+  String actualTodoId =
+      notDoneTodos.elementAt(int.parse(todoId) - 1)['id'].toString();
+  // db operation
   db.execute('''
     DELETE FROM ${listName}
-    WHERE id == ${todoId};
+    WHERE id == ${actualTodoId};
   ''');
 }
 
@@ -59,10 +65,12 @@ void listTodos(String listName) {
   print(listName + ' ---------------------------');
   print('Not Done : ' + notDoneTodos.length.toString());
 
+  var count = 1;
   notDoneTodos.forEach((element) {
     var createdAt = DateTime.fromMicrosecondsSinceEpoch(element['createdAt']);
     var dateString = timeago.format(createdAt);
-    print('${element['id']} ${element['todo']} : ${dateString}');
+    print('${count} ${element['todo']} : ${dateString}');
+    count++;
   });
 }
 
