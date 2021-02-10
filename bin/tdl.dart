@@ -53,14 +53,14 @@ void main(List<String> arguments) {
     argResults = parser.parse(arguments);
   } on FormatException catch (e) {
     // print the error
-    print("ERROR : ${e.message}\n");
+    print('ERROR : ${e.message}\n');
     // print the usage
     print(USAGE);
     // exit out of the program
     exit(1);
   } catch (e) {
     // other errors
-    print("ERROR ${e.message}");
+    print('ERROR ${e.message}');
   }
   var command;
   // error checking

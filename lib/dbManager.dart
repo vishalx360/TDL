@@ -29,7 +29,7 @@ void createList(String listName) {
     );
   ''');
   } catch (err) {
-    print("ERROR : ${err.message}");
+    print('ERROR : ${err.message}');
   }
 }
 
@@ -42,7 +42,7 @@ void deleteList(String listName) {
           '\nERROR: Got error while reading the local Database.\nPlease re-check your command for misspelled names\n');
     }
   } catch (err) {
-    print("ERROR : ${err.message}");
+    print('ERROR : ${err.message}');
   }
 }
 
@@ -56,14 +56,14 @@ void addTodo(String todoText, String listName) {
     VALUES
     ("${todoText}",${now.toString()});
   ''');
-    print("Added one todo in ${listName}");
+    print('Added one todo in ${listName}');
   } on SqliteException catch (e) {
     if (e.extendedResultCode >= 1 && e.extendedResultCode <= 8) {
       print(
           '\nERROR: Got error while reading the local Database.\nPlease re-check your command for misspelled names\n');
     }
   } catch (err) {
-    print("ERROR : ${err.message}");
+    print('ERROR : ${err.message}');
   }
 }
 
@@ -73,17 +73,17 @@ void removeTodo(String todoId, String listName) {
     // find actual todo-id from db
     final notDoneTodos = db.select(
         'SELECT * FROM ${listName} WHERE done == 0 ORDER BY createdAt ASC LIMIT ${todoId}');
-    String actualTodoId =
+    var actualTodoId =
         notDoneTodos.elementAt(int.parse(todoId) - 1)['id'].toString();
     // db operation
     db.execute('''
     DELETE FROM ${listName}
     WHERE id == ${actualTodoId};
   ''');
-    print("Removed one todo from ${listName}");
+    print('Removed one todo from ${listName}');
   }
   // error handeling
-  on RangeError catch (e) {
+  on RangeError {
     print(
         '\nERROR: Got error while reading the local Database.\nPlease re-check your given todo-id\n');
   } on SqliteException catch (e) {
@@ -92,7 +92,7 @@ void removeTodo(String todoId, String listName) {
           '\nERROR: Got error while reading the local Database.\nPlease re-check your command for misspelled names\n');
     }
   } catch (err) {
-    print("ERROR : ${err.message}");
+    print('ERROR : ${err.message}');
   }
 }
 
@@ -119,7 +119,7 @@ void listTodos(String listName) {
           '\nERROR: Got error while reading the local Database.\nPlease re-check your command for misspelled names\n');
     }
   } catch (err) {
-    print("ERROR : ${err.message}");
+    print('ERROR : ${err.message}');
   }
 }
 
