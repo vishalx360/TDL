@@ -3,8 +3,6 @@ name: Release
 on:
   push:
     branches: [main, feature]
-    tags:
-      - "v*.*.*"
 
 jobs:
   Build And Publish:
