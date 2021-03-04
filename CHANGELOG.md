@@ -1,6 +1,7 @@
-## 0.1.0-beta
+## 1.0.0-beta
 
 - Null-Safe Release.
+- Package Upgrades
 
 ## 0.2.0-alpha
 
