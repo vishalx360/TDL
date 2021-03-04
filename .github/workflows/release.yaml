@@ -3,9 +3,11 @@ name: Release
 on:
   push:
     branches: [main, feature]
+    tags:
+      - "v*.*.*"
 
 jobs:
-  Build And Publish:
+  build_and_publish:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
