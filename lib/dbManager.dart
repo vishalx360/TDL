@@ -6,7 +6,7 @@ import 'dart:io' as io;
 import 'package:tdl/settingsManager.dart';
 
 // constants
-String homeDirPath = path.absolute(io.Platform.environment['HOME']);
+String homeDirPath = path.absolute(io.Platform.environment['HOME']!);
 String dbLocation = path.join(homeDirPath, '.tdl/db/todoLists');
 // db setup
 
@@ -18,10 +18,10 @@ void initDB() {
   post_initDB();
 }
 
-void createList(String listName) {
+void createList(String? listName) {
   try {
     db.execute('''
-    CREATE TABLE IF NOT EXISTS ${listName} (
+    CREATE TABLE IF NOT EXISTS $listName (
       id INTEGER NOT NULL PRIMARY KEY,
       todo TEXT NOT NULL,
       done INTEGER default 0,
@@ -29,58 +29,60 @@ void createList(String listName) {
     );
   ''');
   } catch (err) {
-    print('ERROR : ${err.message}');
+    print(err);
   }
 }
 
-void deleteList(String listName) {
+void deleteList(String? listName) {
   try {
-    db.execute('DROP TABLE ${listName}');
+    db.execute('DROP TABLE $listName');
+    print('Deleted list named $listName ');
   } on SqliteException catch (e) {
     if (e.extendedResultCode >= 1 && e.extendedResultCode <= 8) {
       print(
           '\nERROR: Got error while reading the local Database.\nPlease re-check your command for misspelled names\n');
     }
   } catch (err) {
-    print('ERROR : ${err.message}');
+    print(err);
+    // print('ERROR : ${err.message}');
   }
 }
 
 // adds a todo to a particular list
-void addTodo(String todoText, String listName) {
+void addTodo(String? todoText, String? listName) {
   try {
     var now = DateTime.now().microsecondsSinceEpoch;
     db.execute('''
-    INSERT INTO ${listName}
+    INSERT INTO $listName
     (todo,createdAt)
     VALUES
-    ("${todoText}",${now.toString()});
+    ("$todoText",${now.toString()});
   ''');
-    print('Added one todo in ${listName}');
+    print('Added one todo in $listName');
   } on SqliteException catch (e) {
     if (e.extendedResultCode >= 1 && e.extendedResultCode <= 8) {
       print(
           '\nERROR: Got error while reading the local Database.\nPlease re-check your command for misspelled names\n');
     }
   } catch (err) {
-    print('ERROR : ${err.message}');
+    print(err);
   }
 }
 
 // removes a todo to a particular list
-void removeTodo(String todoId, String listName) {
+void removeTodo(String todoId, String? listName) {
   try {
     // find actual todo-id from db
     final notDoneTodos = db.select(
-        'SELECT * FROM ${listName} WHERE done == 0 ORDER BY createdAt ASC LIMIT ${todoId}');
+        'SELECT * FROM $listName WHERE done == 0 ORDER BY createdAt ASC LIMIT $todoId');
     var actualTodoId =
         notDoneTodos.elementAt(int.parse(todoId) - 1)['id'].toString();
     // db operation
     db.execute('''
-    DELETE FROM ${listName}
-    WHERE id == ${actualTodoId};
+    DELETE FROM $listName
+    WHERE id == $actualTodoId;
   ''');
-    print('Removed one todo from ${listName}');
+    print('Removed one todo from $listName');
   }
   // error handeling
   on RangeError {
@@ -92,7 +94,7 @@ void removeTodo(String todoId, String listName) {
           '\nERROR: Got error while reading the local Database.\nPlease re-check your command for misspelled names\n');
     }
   } catch (err) {
-    print('ERROR : ${err.message}');
+    print(err);
   }
 }
 
@@ -100,7 +102,7 @@ void removeTodo(String todoId, String listName) {
 void listTodos(String listName) {
   try {
     final notDoneTodos = db.select(
-        'SELECT * FROM ${listName} WHERE done == 0 ORDER BY createdAt ASC');
+        'SELECT * FROM $listName WHERE done == 0 ORDER BY createdAt ASC');
     print(listName + ' ---------------------------');
     print('Not Done : ' + notDoneTodos.length.toString());
 
@@ -108,7 +110,7 @@ void listTodos(String listName) {
     notDoneTodos.forEach((element) {
       var createdAt = DateTime.fromMicrosecondsSinceEpoch(element['createdAt']);
       var dateString = timeago.format(createdAt);
-      print('${count} ${element['todo']} : ${dateString}');
+      print('$count ${element['todo']} : $dateString');
       count++;
     });
   }
@@ -119,7 +121,7 @@ void listTodos(String listName) {
           '\nERROR: Got error while reading the local Database.\nPlease re-check your command for misspelled names\n');
     }
   } catch (err) {
-    print('ERROR : ${err.message}');
+    print(err);
   }
 }
 

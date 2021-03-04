@@ -13,7 +13,7 @@ Future<bool> folderExists(String path) {
   return io.Directory(path).exists();
 }
 
-String homeDirPath = path.absolute(io.Platform.environment['HOME']);
+String homeDirPath = path.absolute(io.Platform.environment['HOME']!);
 
 // defaults
 final APP_DIR = path.join(homeDirPath, '.tdl');
@@ -25,17 +25,17 @@ Map<String, String> CONFIG = {
   'default_list': 'main_list',
 };
 
-Future<Map> getSettings() async {
+Future<Map?> getSettings() async {
   if (!await folderExists(APP_DIR)) {
     // create settings.json config file
-    await io.File(CONFIG_PATH).createSync(recursive: true);
+    io.File(CONFIG_PATH).createSync(recursive: true);
     await io.Directory(DB_PATH).create();
     // write defaut settings to it
     await io.File(CONFIG_PATH).writeAsString(json.encode(CONFIG));
     return CONFIG;
   } else {
     // if settings exists, load.
-    var localConfig = {};
+    Map<dynamic, dynamic>? localConfig = {};
     await io.File(CONFIG_PATH).readAsString().then((String contents) {
       localConfig = json.decode(contents);
     });
