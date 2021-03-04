@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build_and_publish:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            asset_name: tdl-linux-amd64
+          - os: windows-latest
+            asset_name: tdl-windows-amd64.exe
+          - os: macos-latest
+            asset_name: tdl-macos-amd64
+    steps:
+      - uses: actions/checkout@v2
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: 2.12.0
+      # install all dependencies
+      - name: Install dependencies
+        run: dart pub get
+      # compile binaries
+      - name: Build Binaries
+        run: dart compile exe bin/tdl.dart -o tdl
+      # upload to github release
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: tdl
+          asset_name: ${{ matrix.asset_name }}
+          tag: ${{ github.ref }}
