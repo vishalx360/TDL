@@ -24,8 +24,8 @@ Usage : `tdl [command] [option] ...`
 
 void main(List<String> arguments) {
   // fetch-config
-  getSettings().then((Map<dynamic, dynamic> value) => {
-        if (value['db_initilized'] == 'false') {initDB()}
+  getSettings().then((Map<dynamic, dynamic>? value) => {
+        if (value!['db_initilized'] == 'false') {initDB()}
       });
   // init parser
   final parser = ArgParser();
@@ -48,7 +48,7 @@ void main(List<String> arguments) {
   parser.addCommand('delete');
 
   // parser-result
-  var argResults;
+  late var argResults;
   try {
     argResults = parser.parse(arguments);
   } on FormatException catch (e) {
@@ -58,9 +58,6 @@ void main(List<String> arguments) {
     print(USAGE);
     // exit out of the program
     exit(1);
-  } catch (e) {
-    // other errors
-    print('ERROR ${e.message}');
   }
   var command;
   // error checking
@@ -71,7 +68,7 @@ void main(List<String> arguments) {
   if (command == 'create') {
     if (argResults.arguments.length == 2) {
       if (argResults.arguments[1].length > LIST_NAME_MAX_SIZE) {
-        print('List-Name should be under ${LIST_NAME_MAX_SIZE} characters.');
+        print('List-Name should be under $LIST_NAME_MAX_SIZE characters.');
         // exit out of the program
         exit(1);
       }
@@ -92,7 +89,7 @@ void main(List<String> arguments) {
           ''');
     } else {
       if (argResults.arguments[1].length > TODO_MAX_SIZE) {
-        print('ERROR: each Todo should be under ${TODO_MAX_SIZE} characters.');
+        print('ERROR: each Todo should be under $TODO_MAX_SIZE characters.');
         // exit out of the program
         exit(1);
       }
@@ -117,7 +114,6 @@ void main(List<String> arguments) {
     if (argResults.arguments.length == 2) {
       if (argResults.arguments[1] != 'main_list') {
         deleteList(argResults.arguments[1]);
-        print('Deleted list named ${argResults.arguments[1]} ');
       } else {
         print('You can not delete default main_list');
       }
